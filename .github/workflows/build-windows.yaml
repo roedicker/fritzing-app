@@ -1,0 +1,67 @@
+name: Build Fritzing Windows x64
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      # 📥 Eigenes Repo (für Workflow + Skripte)
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      # 📥 Externes fritzing-app Repo
+      - name: Checkout fritzing-app
+        uses: actions/checkout@v4
+        with:
+          repository: fritzing/fritzing-app
+          path: fritzing-app
+
+      - name: 🧰 Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: 📦 Setup Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+
+      - name: 🔧 Install dependencies
+        run: |
+          choco install openssl -y
+          choco install 7zip -y
+
+      # 👉 wichtig: in das externe Repo wechseln
+      - name: ⚙️ Configure (qmake)
+        working-directory: fritzing-app
+        run: |
+          qmake phoenix.pro
+
+      - name: 🏗️ Build
+        working-directory: fritzing-app
+        run: |
+          nmake
+
+      - name: 📁 Prepare artifact
+        run: |
+          mkdir dist
+          copy fritzing-app\release\Fritzing.exe dist\
+
+      - name: 📦 Bundle Qt dependencies
+        run: |
+          windeployqt dist\Fritzing.exe
+
+      - name: 📦 Package
+        run: |
+          powershell Compress-Archive -Path dist\* -DestinationPath fritzing-windows-x64.zip
+
+      - name: ⬆️ Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fritzing-windows-x64
+          path: fritzing-windows-x64.zip
