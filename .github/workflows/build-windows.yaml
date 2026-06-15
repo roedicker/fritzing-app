@@ -65,17 +65,14 @@ jobs:
           Expand-Archive boost.zip -DestinationPath .
 
       - name: ⚙️Configure Fritzing
+        working-directory: fritzing-app
         run: |
-          $w = "${{ github.workspace }}" -replace '\\','/'
-
-          cd "$w/fritzing-app"
-
           qmake phoenix.pro `
           DEFINES+=BOOST_FOUND `
-          "INCLUDEPATH+=$w/boost_1_76_0"
+          "INCLUDEPATH+=./boost_1_76_0"
 
       - name: 🔨 Build fritzing-app
-        working-directory: ${{ github.workspace }}\fritzing-app
+        working-directory: fritzing-app
         run: |
           nmake
 
