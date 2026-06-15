@@ -9,19 +9,30 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      # 📥 Eigenes Repo (für Workflow + Skripte)
-      - name: Checkout current repository
+      # 📥 Own repository (workflow only)
+      - name: 📥 Checkout current repository
         uses: actions/checkout@v4
 
-      # 📥 Externes fritzing-app Repo
-      - name: Checkout fritzing-app
-        uses: actions/checkout@v4
-        with:
-          repository: fritzing/fritzing-app
-          path: fritzing-app
-
+      # 🧰 MSVC build-environment
       - name: 🧰 Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
+
+      # 📥 libgit2 (checkout)
+      - name: 📥 Checkout libgit2
+        uses: actions/checkout@v4
+        with:
+          repository: libgit2/libgit2
+          path: libgit2
+          ref: v1.7.2
+
+      # 🔨 libgit2 (build)
+      - name: 🔨 Build libgit2
+        working-directory: libgit2
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G "Visual Studio 17 2022" -A x64 -DBUILD_SHARED_LIBS=OFF
+          cmake --build . --config Release
 
       - name: 📦 Setup Qt
         uses: jurplel/install-qt-action@v3
@@ -31,18 +42,21 @@ jobs:
           target: 'desktop'
           arch: 'win64_msvc2019_64'
 
-      - name: 🔧 Install dependencies
-        run: |
-          choco install openssl -y
-          choco install 7zip -y
-
-      # 👉 wichtig: in das externe Repo wechseln
+      # 📥 fritzing-app (checkout)
+      - name: 📥 fritzing-app (checkout)
+        uses: actions/checkout@v4
+        with:
+          repository: fritzing/fritzing-app
+          path: fritzing-app
+          submodules: recursive
+      
+      # ⚙️ fritzing-app (configure)
       - name: ⚙️ Configure (qmake)
         working-directory: fritzing-app
         run: |
           qmake phoenix.pro
 
-      - name: 🏗️ Build
+      - name: 🔨 Build fritzing-app
         working-directory: fritzing-app
         run: |
           nmake
