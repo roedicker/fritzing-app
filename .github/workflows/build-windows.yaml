@@ -72,7 +72,7 @@ jobs:
           dir boost_1_76_0\boost\version.hpp
 
       - name: Test what qmake sees
-        working-directory: fritzing-app
+        working-directory: ${{ github.workspace }}/fritzing-app
         run: |
           echo CURRENT:
           cd
@@ -84,12 +84,12 @@ jobs:
           dir ..\
 
       - name: ⚙️ Configure qmake (for fritzing-app)
-        working-directory: fritzing-app
+        working-directory: ${{ github.workspace }}/fritzing-app
         run: |
           qmake phoenix.pro
 
       - name: 🔨 Build fritzing-app
-        working-directory: fritzing-app
+        working-directory: ${{ github.workspace }}/fritzing-app
         run: |
           nmake
 
