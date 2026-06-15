@@ -69,6 +69,11 @@ jobs:
          mkdir libgit2\build64\Release 2>nul
          copy libgit2\build\git2.lib libgit2\build64\Release\
       
+      - name: 📥 Download Boost
+        run: |
+         curl -L https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.zip -o boost.zip
+         powershell Expand-Archive boost.zip -DestinationPath .
+      
       # ⚙️ fritzing-app (configure)
       - name: ⚙️ Configure qmake (for fritzing-app)
         working-directory: fritzing-app
