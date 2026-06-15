@@ -61,7 +61,7 @@ jobs:
       - name: 📥 Download Boost (for fritzing-app)
         run: |
           Invoke-WebRequest -Uri https://archives.boost.io/release/1.76.0/source/boost_1_76_0.zip -OutFile boost.zip
-          Expand-Archive boost.zip -DestinationPath 
+          Expand-Archive boost.zip -DestinationPath .
 
       - name: ⚙️ Configure qmake (for fritzing-app)
         working-directory: fritzing-app
