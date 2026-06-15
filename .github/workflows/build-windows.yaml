@@ -64,8 +64,13 @@ jobs:
           path: fritzing-app
           submodules: recursive
       
+      - name: ⚙️ Copy libgit2 (for fritzing-app)
+        run: |
+         mkdir libgit2\build64\Release 2>nul
+         copy libgit2\build\git2.lib libgit2\build64\Release\
+      
       # ⚙️ fritzing-app (configure)
-      - name: ⚙️ Configure (qmake)
+      - name: ⚙️ Configure qmake (for fritzing-app)
         working-directory: fritzing-app
         run: |
           qmake phoenix.pro
