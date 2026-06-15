@@ -9,29 +9,19 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      # 📥 Own repository (workflow only)
-      - name: 📥 Checkout current repository
+      - name: 📥 Checkout current repository (workflow only)
         uses: actions/checkout@v4
 
-      # 📥 libgit2 (checkout)
-      - name: 📥 Checkout libgit2
+      - name: 📥 libgit2 (checkout)
         uses: actions/checkout@v4
         with:
           repository: libgit2/libgit2
           path: libgit2
           ref: v1.7.2
 
-      # 🧰 MSVC aktivieren (CRITICAL)
-      - name: Setup MSVC environment
+      - name: 🧰 Setup MSVC environment
         uses: ilammy/msvc-dev-cmd@v1
 
-      # 🔍 Debug (optional aber extrem hilfreich)
-      - name: 🔍 Verify compiler
-        run: |
-          where cl
-          cl
-
-      # 🔨 libgit2 build (robust!)
       - name: 🔨 Build libgit2
         working-directory: libgit2
         run: |
@@ -56,7 +46,6 @@ jobs:
           target: 'desktop'
           arch: 'win64_msvc2019_64'
 
-      # 📥 fritzing-app (checkout)
       - name: 📥 fritzing-app (checkout)
         uses: actions/checkout@v4
         with:
@@ -66,15 +55,14 @@ jobs:
       
       - name: ⚙️ Copy libgit2 (for fritzing-app)
         run: |
-         mkdir libgit2\build64\Release 2>nul
-         copy libgit2\build\git2.lib libgit2\build64\Release\
-      
-      - name: 📥 Download Boost
+          mkdir libgit2\build64\Release 2>nul
+          copy libgit2\build\git2.lib libgit2\build64\Release\
+
+      - name: 📥 Download Boost (for fritzing-app)
         run: |
-         curl -L https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.zip -o boost.zip
-         powershell Expand-Archive boost.zip -DestinationPath .
-      
-      # ⚙️ fritzing-app (configure)
+          Invoke-WebRequest -Uri https://archives.boost.io/release/1.76.0/source/boost_1_76_0.zip -OutFile boost.zip
+          Expand-Archive boost.zip -DestinationPath 
+
       - name: ⚙️ Configure qmake (for fritzing-app)
         working-directory: fritzing-app
         run: |
