@@ -62,7 +62,7 @@ jobs:
         working-directory: fritzing-app
         run: |
           Invoke-WebRequest -Uri https://archives.boost.io/release/1.76.0/source/boost_1_76_0.zip -OutFile boost.zip
-          Expand-Archive boost.zip -DestinationPath .\fritzing-app\
+          Expand-Archive boost.zip -DestinationPath .
 
       - name: ⚙️Configure Fritzing
         working-directory: fritzing-app
