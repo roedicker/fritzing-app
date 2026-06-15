@@ -69,7 +69,7 @@ jobs:
         run: |
           qmake phoenix.pro `
           DEFINES+=BOOST_FOUND `
-          "INCLUDEPATH+=./boost_1_76_0"
+          "INCLUDEPATH+=../boost_1_76_0"
 
       - name: 🔨 Build fritzing-app
         working-directory: fritzing-app
