@@ -67,7 +67,7 @@ jobs:
       - name: ⚙️ Configure qmake (for fritzing-app)
         working-directory: ${{ github.workspace }}/fritzing-app
         run: |
-          qmake phoenix.pro `         
+          qmake phoenix.pro ` 
           "BOOSTPATH=${{ github.workspace }}/boost_1_76_0" `
           "INCLUDEPATH+=${{ github.workspace }}/boost_1_76_0"
 
