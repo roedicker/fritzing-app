@@ -64,6 +64,13 @@ jobs:
           Invoke-WebRequest -Uri https://archives.boost.io/release/1.76.0/source/boost_1_76_0.zip -OutFile boost.zip
           Expand-Archive boost.zip -DestinationPath .
 
+      - name: 📁 Verify Boost layout
+        run: |
+          dir
+          dir boost_1_76_0
+          dir boost_1_76_0\boost
+          dir boost_1_76_0\boost\version.hpp
+
       - name: ⚙️ Configure qmake (for fritzing-app)
         working-directory: fritzing-app
         run: |
