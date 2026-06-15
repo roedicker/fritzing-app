@@ -64,10 +64,15 @@ jobs:
           Invoke-WebRequest -Uri https://archives.boost.io/release/1.76.0/source/boost_1_76_0.zip -OutFile boost.zip
           Expand-Archive boost.zip -DestinationPath .
 
-      - name: ⚙️ Configure qmake (for fritzing-app)
-        working-directory: ${{ github.workspace }}\fritzing-app
+      - name: ⚙️Configure Fritzing
         run: |
-          qmake phoenix.pro "BOOSTPATH=${{ github.workspace }}\..\boost_1_76_0" "INCLUDEPATH+=${{ github.workspace }}\..\boost_1_76_0"
+          $w = "${{ github.workspace }}" -replace '\\','/'
+
+          cd "$w/fritzing-app"
+
+          qmake phoenix.pro `
+          DEFINES+=BOOST_FOUND `
+          "INCLUDEPATH+=$w/boost_1_76_0"
 
       - name: 🔨 Build fritzing-app
         working-directory: ${{ github.workspace }}\fritzing-app
