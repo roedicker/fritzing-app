@@ -71,6 +71,18 @@ jobs:
           dir boost_1_76_0\boost
           dir boost_1_76_0\boost\version.hpp
 
+      - name: Test what qmake sees
+        working-directory: fritzing-app
+        run: |
+          echo CURRENT:
+          cd
+
+          echo TRY ACCESS:
+          dir ..\boost_1_76_0\boost\version.hpp
+
+          echo LIST BOOST DIR:
+          dir ..\
+
       - name: ⚙️ Configure qmake (for fritzing-app)
         working-directory: fritzing-app
         run: |
