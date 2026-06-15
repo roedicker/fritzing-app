@@ -40,7 +40,9 @@ jobs:
           cmake .. -G "NMake Makefiles" `
             -DCMAKE_BUILD_TYPE=Release `
             -DBUILD_SHARED_LIBS=OFF `
-            -DUSE_HTTPS=OFF
+            -DUSE_HTTPS=OFF `
+            -DUSE_SSH=OFF `
+            -DUSE_SSPI=OFF
           nmake
 
       - name: 📦 Setup Qt
