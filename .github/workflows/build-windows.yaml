@@ -41,6 +41,8 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release `
             -DBUILD_SHARED_LIBS=OFF `
             -DBUILD_CLI=OFF `
+            -DBUILD_TESTS=OFF `
+            -DBUILD_CLAR=OFF `
             -DUSE_HTTPS=OFF `
             -DUSE_SSH=OFF `
             -DUSE_SSPI=OFF
