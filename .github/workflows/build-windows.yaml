@@ -59,6 +59,7 @@ jobs:
           copy libgit2\build\git2.lib libgit2\build64\Release\
 
       - name: 📥 Download Boost (for fritzing-app)
+        working-directory: ${{ github.workspace }}
         run: |
           Invoke-WebRequest -Uri https://archives.boost.io/release/1.76.0/source/boost_1_76_0.zip -OutFile boost.zip
           Expand-Archive boost.zip -DestinationPath .
